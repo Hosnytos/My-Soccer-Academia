@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "603929589396",
+    "project_id": "my-soccer-academia",
+    "storage_bucket": "my-soccer-academia.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:603929589396:android:196a7b0da43e47eaa9a681",
+        "android_client_info": {
+          "package_name": "com.example.my_soccer_academia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "603929589396-3k2m9all0rbb19tdnggt81kpi11j8duk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABo1u7JopnYPpnr6K4pok1CX86UQtMY9s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "603929589396-3k2m9all0rbb19tdnggt81kpi11j8duk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
