@@ -57,7 +57,7 @@ class _TeamsPageState extends State<TeamsPage> {
         '/v3/teams',
         {
           "league": "$leagueId",
-          "season": "2020"
+          "season": "2021"
         });
 
     setState(() {

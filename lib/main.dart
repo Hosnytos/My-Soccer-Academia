@@ -64,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
         centerTitle: true,
       ),
-      body: _listView(),
+      body: _bodyContainer(),
     );
   }
 
@@ -89,8 +89,48 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  Widget _bodyContainer(){
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        _leagues(),
+        Expanded(
+            child: _listView()
+        ),
+        _fixtures(),
+      ],
+    );
+  }
+
+  Widget _leagues(){
+    return const Padding(
+        padding: EdgeInsets.only(top: 18.0, right: 250, bottom: 18),
+        child: Center(
+          child: Text(
+            "League",
+            style: TextStyle(
+                color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+        ),
+      );
+  }
+
+  Widget _fixtures(){
+    return const Padding(
+      padding: EdgeInsets.only(top: 25.0, right: 250, bottom: 18),
+      child: Center(
+        child: Text(
+          "Fixtures",
+          style: TextStyle(
+              color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
+  }
+
   Widget _listView(){
     return ListView.builder(
+      scrollDirection: Axis.horizontal,
         itemCount: leagueNameList.length,
         itemBuilder: (context, index){
           return _pageBody(index);
@@ -112,8 +152,7 @@ class _MyHomePageState extends State<MyHomePage> {
     leagueLogo = leagueLogoList[index];
 
     return SizedBox(
-      height: 250,
-      width: 500,
+      width: 70,
       child: GestureDetector(
         onTap: () => Navigator.of(context).push(
             MaterialPageRoute(builder: (context) => TeamsPage(leagueIdList[index],
@@ -123,12 +162,12 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         child: Card(
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10)),
+              borderRadius: BorderRadius.circular(20)),
           elevation: 7.5,
           child: Column(
             children: [
               _leagueLogo(index),
-              _leagueTitle(index),
+             // _leagueTitle(index),
             ],
           ),
         ),
@@ -139,10 +178,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _leagueLogo(index){
     return Padding(
       padding:
-      const EdgeInsets.only(top: 10, left: 12),
+      const EdgeInsets.only(top: 10),
       child: Container(
-        width: 100.0,
-        height: 155.0,
+        height: 40.0,
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(
               Radius.circular(12.0)),
@@ -158,12 +196,12 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _leagueTitle(index){
     return Container(
       width: MediaQuery.of(context).size.width,
-      padding: const EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 10),
+      padding: const EdgeInsets.only(top: 20, left: 50, right: 50, bottom: 10),
       child: Center(
         child: Text(
           leagueNameList[index],
           style: const TextStyle(
-              color: Colors.black, fontSize: 17),
+              color: Colors.black, fontSize: 12),
         ),
       ),
     );

@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:my_soccer_academia/auth_workflow/register_page.dart';
+import 'package:my_soccer_academia/pages/beta_main_page.dart';
 import 'package:my_soccer_academia/utils/msa_colors.dart';
 import 'package:my_soccer_academia/utils/pop_up_message.dart';
 
@@ -71,7 +73,7 @@ class _LoginPageState extends State<LoginPage> {
         margin: const EdgeInsets.only(top: 30 ,bottom: 20.0, right: 43, left: 43),
         child: TextFormField(
             onChanged: (String string) {
-              //loginTF = string;
+              loginTF = string;
             },
             decoration: InputDecoration(
                 enabledBorder: const OutlineInputBorder(
@@ -172,12 +174,17 @@ class _LoginPageState extends State<LoginPage> {
                   horizontal: 29.5, vertical: 11),
             ),
             onPressed: () {
-              if (checkFieldsValues() && checkCredentials()) {
+              if (checkFieldsValues()) {
                 print("Logged in !");
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) =>
+                    const BetaMainPage()
+                    )
+                );
               }
               else {
                 PopUpMessage().SnackError(
-                    "Wrong credentials bitch !!!",
+                    "Wrong credentials !!!",
                     _scaffoldKey);
               }
             },
@@ -199,11 +206,9 @@ class _LoginPageState extends State<LoginPage> {
     return Container(
         height: 40.0,
         margin: const EdgeInsets.only(top: 25, right: 43, left: 43),
-        child: Material(
-            color: Colors.white,
-            borderRadius: const BorderRadius.all(Radius.circular(8.0)),
             child: InkWell(
                 onTap: () {
+                  print('taped button');
                 },
                 child: Card(
                     color: Colors.white,
@@ -247,8 +252,7 @@ class _LoginPageState extends State<LoginPage> {
                         ])
                 )
             )
-        )
-    );
+        );
   }
 
   Widget _noAccount(){
@@ -277,7 +281,11 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
-                        print("Register clicked !");
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) =>
+                                RegisterPage()
+                            )
+                        );
                       })
               ],
             )

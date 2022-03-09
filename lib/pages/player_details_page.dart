@@ -82,7 +82,7 @@ class _PlayerDetailsPageState extends State<PlayerDetailsPage> {
         '/v3/players',
         {
           "id": "$selectedPlayerId",
-          "season": "2020"
+          "season": "2021"
         });
 
     setState(() {
@@ -435,7 +435,7 @@ class _PlayerDetailsPageState extends State<PlayerDetailsPage> {
               );
             },
             child: const Text(
-                "Season 2020 Statistics"
+                "Season 2021 Statistics"
             ),
           ),
         )

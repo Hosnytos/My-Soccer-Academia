@@ -65,7 +65,7 @@ class _PlayerStatisticsPage extends State<PlayerStatisticsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Season 2020 - " + selectedPlayerName,
+        title: Text("Season 2021 - " + selectedPlayerName,
           style: const TextStyle(fontSize: 20),),
         centerTitle: true,
       ),
@@ -79,7 +79,7 @@ class _PlayerStatisticsPage extends State<PlayerStatisticsPage> {
         '/v3/players',
         {
           "id" : "$selectedPlayerId",
-          "season": "2020",
+          "season": "2021",
         });
 
     setState(() {

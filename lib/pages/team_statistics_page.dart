@@ -74,7 +74,7 @@ class _TeamStatisticsPageState extends State<TeamStatisticsPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Season 2020 - Statistics", style: TextStyle(fontSize: 20),),
+        title: const Text("Season 2021 - Statistics", style: TextStyle(fontSize: 20),),
         centerTitle: true,
       ),
       body: _pageBody(),
@@ -87,7 +87,7 @@ class _TeamStatisticsPageState extends State<TeamStatisticsPage> {
         '/v3/teams/statistics',
         {
           "league" : "$leagueId",
-          "season": "2020",
+          "season": "2021",
           "team": "$selectedTeamId"
         });
 

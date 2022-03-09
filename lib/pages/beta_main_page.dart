@@ -7,6 +7,8 @@ import 'package:my_soccer_academia/rest/request.dart';
 import '../main.dart';
 
 class BetaMainPage extends StatefulWidget {
+  const BetaMainPage({Key? key}) : super(key: key);
+
 
 
   @override
