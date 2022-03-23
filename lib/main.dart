@@ -1,11 +1,14 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:my_soccer_academia/auth_workflow/auth_service.dart';
+import 'package:my_soccer_academia/auth_workflow/wrapper.dart';
 import 'package:my_soccer_academia/pages/beta_main_page.dart';
 import 'package:my_soccer_academia/pages/splash_screen.dart';
 import 'package:flutter_image/network.dart';
 import 'package:my_soccer_academia/pages/teams_page.dart';
 import 'package:my_soccer_academia/rest/request.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,14 +22,19 @@ class MySoccerApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: '',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.green,
+    return MultiProvider(
+      providers: [
+        Provider<AuthService>(create: (_) => AuthService(), ),
+      ],
+      child: MaterialApp(
+        title: '',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primarySwatch: Colors.green,
+        ),
+        //home: const MyHomePage(title: 'My Soccer Academia'),
+        home: Wrapper(),
       ),
-      //home: const MyHomePage(title: 'My Soccer Academia'),
-      home: BetaMainPage(),
     );
   }
 }

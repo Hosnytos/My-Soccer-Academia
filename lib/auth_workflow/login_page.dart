@@ -1,11 +1,13 @@
-import 'package:flutter/cupertino.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:my_soccer_academia/auth_workflow/auth_service.dart';
 import 'package:my_soccer_academia/auth_workflow/register_page.dart';
 import 'package:my_soccer_academia/pages/beta_main_page.dart';
 import 'package:my_soccer_academia/utils/msa_colors.dart';
 import 'package:my_soccer_academia/utils/pop_up_message.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
 
@@ -23,15 +25,15 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-
+    final authService = Provider.of<AuthService>(context);
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: MSAColors.lightWhite,
-      body: _pageBody(),
+      body: _pageBody(authService),
     );
   }
 
-  Widget _pageBody(){
+  Widget _pageBody(authService){
     return Padding(
       padding: const EdgeInsets.only(top: 120.0),
       child: SingleChildScrollView(
@@ -42,7 +44,7 @@ class _LoginPageState extends State<LoginPage> {
             _msaLogo(),
             _emailField(),
             _pwdField(),
-            _loginButton(),
+            _loginButton(authService),
             _googleAuth(),
             _noAccount()
           ],
@@ -154,7 +156,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _loginButton(){
+  Widget _loginButton(authService){
     return Container(
       height: 45,
         width: 180,
@@ -173,20 +175,18 @@ class _LoginPageState extends State<LoginPage> {
               padding: const EdgeInsets.symmetric(
                   horizontal: 29.5, vertical: 11),
             ),
-            onPressed: () {
-              if (checkFieldsValues()) {
-                print("Logged in !");
-                Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) =>
-                    const BetaMainPage()
-                    )
-                );
-              }
-              else {
-                PopUpMessage().SnackError(
-                    "Wrong credentials !!!",
-                    _scaffoldKey);
-              }
+            onPressed: () async {
+                 await authService.signWithEmailAndPassword(loginTF, pwdTF);
+                 var currentUser = FirebaseAuth.instance.currentUser;
+                 if(currentUser != null) {
+                   Navigator.of(context).pushReplacement(MaterialPageRoute(
+                       builder: (context) => const BetaMainPage()));
+                 }
+                 else {
+                   PopUpMessage().SnackError(
+                       "Credentials error !!!",
+                       _scaffoldKey);
+                 }
             },
             child: Text(
                 "LOGIN",
@@ -301,13 +301,6 @@ class _LoginPageState extends State<LoginPage> {
 
   bool checkFieldsValues() {
     if (loginTF.isEmpty || pwdTF.isEmpty) {
-      return false;
-    }
-    return true;
-  }
-
-  bool checkCredentials() {
-    if (!isEmailRegValid(loginTF) || pwdTF.length < 6) {
       return false;
     }
     return true;

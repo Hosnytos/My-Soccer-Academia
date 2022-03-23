@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_image/network.dart';
+import 'package:my_soccer_academia/auth_workflow/auth_service.dart';
 import 'package:my_soccer_academia/auth_workflow/login_page.dart';
 import 'package:my_soccer_academia/auth_workflow/register_page.dart';
 import 'package:my_soccer_academia/rest/request.dart';
+import 'package:provider/provider.dart';
 
 import '../main.dart';
 
@@ -21,17 +23,17 @@ class _BetaMainPageState extends State<BetaMainPage> {
 
   @override
   Widget build(BuildContext context) {
-
+    final authService = Provider.of<AuthService>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Page test", style: TextStyle(fontSize: 20),),
         centerTitle: true,
       ),
-      body: _multiX(),
+      body: _multiX(authService),
     );
   }
 
-  Widget _multiX(){
+  Widget _multiX(authService){
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -40,7 +42,8 @@ class _BetaMainPageState extends State<BetaMainPage> {
           _displayLeaguesButton(),
           _displayLiveScoreButton(),
           _displayLoginButton(),
-          _displayRegisterButton()
+          _displayRegisterButton(),
+          _signOutButton(authService)
         ],
       ),
     );
@@ -164,6 +167,38 @@ class _BetaMainPageState extends State<BetaMainPage> {
             },
             child: const Text(
                 "Display Register Page"
+            ),
+          ),
+        )
+    );
+  }
+
+  Widget _signOutButton(authService) {
+    return Container(
+        margin: const EdgeInsets.only(top: 20.0, bottom: 20),
+        child: ButtonTheme(
+          minWidth: MediaQuery.of(context).size.width / 2,
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              textStyle: const TextStyle(
+                color: Colors.white,
+                fontSize: 12,
+              ),
+              primary: Colors.pinkAccent,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0)),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 29.5, vertical: 11),
+            ),
+            onPressed: () async {
+              await authService.signOut();
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => LoginPage()
+                  )
+              );
+            },
+            child: const Text(
+                "Logout Button"
             ),
           ),
         )

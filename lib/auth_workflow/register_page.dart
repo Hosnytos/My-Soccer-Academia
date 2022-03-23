@@ -6,6 +6,9 @@ import 'package:my_soccer_academia/auth_workflow/login_page.dart';
 import 'package:my_soccer_academia/pages/beta_main_page.dart';
 import 'package:my_soccer_academia/utils/msa_colors.dart';
 import 'package:my_soccer_academia/utils/pop_up_message.dart';
+import 'package:provider/provider.dart';
+
+import 'auth_service.dart';
 
 class RegisterPage extends StatefulWidget {
 
@@ -24,15 +27,15 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-
+    final authService = Provider.of<AuthService>(context);
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: MSAColors.lightWhite,
-      body: _pageBody(),
+      body: _pageBody(authService),
     );
   }
 
-  Widget _pageBody(){
+  Widget _pageBody(authService){
     return Padding(
       padding: const EdgeInsets.only(top: 60.0),
       child: SingleChildScrollView(
@@ -44,7 +47,7 @@ class _RegisterPageState extends State<RegisterPage> {
             _emailField(),
             _usernameField(),
             _pwdField(),
-            _registerButton(),
+            _registerButton(authService),
             _googleAuth(),
             _noAccount()
           ],
@@ -196,7 +199,7 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  Widget _registerButton(){
+  Widget _registerButton(authService){
     return Container(
         height: 45,
         width: 180,
@@ -215,9 +218,9 @@ class _RegisterPageState extends State<RegisterPage> {
               padding: const EdgeInsets.symmetric(
                   horizontal: 29.5, vertical: 11),
             ),
-            onPressed: () {
+            onPressed: () async {
               if (checkFieldsValues()) {
-                print("Registered !");
+                await authService.createUserWithEmailAndPassword(emailTF, pwdTF);
                 Navigator.of(context).pushReplacement(
                     MaterialPageRoute(builder: (context) =>
                     const BetaMainPage()
@@ -342,14 +345,14 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   bool checkFieldsValues() {
-    if (usernameTF.isEmpty || pwdTF.isEmpty) {
+    if (emailTF.isEmpty || pwdTF.isEmpty) {
       return false;
     }
     return true;
   }
 
   bool checkCredentials() {
-    if (!isEmailRegValid(usernameTF) || pwdTF.length < 6) {
+    if (!isEmailRegValid(emailTF) || pwdTF.length < 6) {
       return false;
     }
     return true;
