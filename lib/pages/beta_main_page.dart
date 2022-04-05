@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_image/network.dart';
 import 'package:my_soccer_academia/auth_workflow/auth_service.dart';
 import 'package:my_soccer_academia/auth_workflow/login_page.dart';
 import 'package:my_soccer_academia/auth_workflow/register_page.dart';
-import 'package:my_soccer_academia/rest/request.dart';
 import 'package:provider/provider.dart';
 
 import '../main.dart';

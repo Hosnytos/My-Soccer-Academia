@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:my_soccer_academia/auth_workflow/auth_service.dart';
 import 'package:my_soccer_academia/auth_workflow/wrapper.dart';
-import 'package:my_soccer_academia/pages/beta_main_page.dart';
 import 'package:my_soccer_academia/pages/splash_screen.dart';
 import 'package:flutter_image/network.dart';
 import 'package:my_soccer_academia/pages/teams_page.dart';
@@ -57,6 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
   List<String> leagueNameList = [];
   List<String> leagueLogoList = [];
   List<int> leagueIdList = [];
+  List<int> listFavLeague = [39, 78, 140, 61, 135, 424];
 
   @override
   void initState() {
@@ -85,13 +85,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
     setState(() {
       for(int i = 0; i <leagueFetch.body.length; i++ ){
-        var leagueBodyId = leagueFetch.body[i]['league']['id'];
-        if(leagueBodyId == 39 || leagueBodyId == 78 || leagueBodyId == 140 ||
-            leagueBodyId == 61 || leagueBodyId == 135 || leagueBodyId == 424){
-
-          leagueNameList.add(leagueFetch.body[i]['league']['name']);
-          leagueLogoList.add(leagueFetch.body[i]['league']['logo']);
-          leagueIdList.add(leagueFetch.body[i]['league']['id']);
+        List<int> leagueBodyId = [];
+        leagueBodyId.add(leagueFetch.body[i]['league']['id']);
+        for(int j = 0; j < listFavLeague.length; j++){
+          if(leagueBodyId.contains(listFavLeague[j])){
+            leagueNameList.add(leagueFetch.body[i]['league']['name']);
+            leagueLogoList.add(leagueFetch.body[i]['league']['logo']);
+            leagueIdList.add(leagueFetch.body[i]['league']['id']);
+          }
         }
       }
     });
