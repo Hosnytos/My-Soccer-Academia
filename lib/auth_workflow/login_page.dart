@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:my_soccer_academia/auth_workflow/auth_service.dart';
 import 'package:my_soccer_academia/auth_workflow/register_page.dart';
 import 'package:my_soccer_academia/pages/beta_main_page.dart';
@@ -22,6 +23,8 @@ class _LoginPageState extends State<LoginPage> {
   late String loginTF = "";
   late String pwdTF = "";
   bool _isHidden = true;
+  final google = GoogleSignIn();
+  GoogleSignInAccount ? userGoogle;
 
   @override
   Widget build(BuildContext context) {
@@ -207,8 +210,33 @@ class _LoginPageState extends State<LoginPage> {
         height: 40.0,
         margin: const EdgeInsets.only(top: 25, right: 43, left: 43),
             child: InkWell(
-                onTap: () {
-                  print('taped button');
+                onTap: () async {
+                  try{
+                    final googleMethod = await google.signIn();
+                    userGoogle = googleMethod;
+                    final authGoogle = await googleMethod!.authentication;
+                    final credGoogle = GoogleAuthProvider.credential(
+                        accessToken: authGoogle.idToken,
+                        idToken: authGoogle.idToken
+                    );
+                    await FirebaseAuth.instance.signInWithCredential(credGoogle);
+                    var currentUser = FirebaseAuth.instance.currentUser?.uid;
+                    if(currentUser != null) {
+                      Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(builder: (context) =>
+                          const BetaMainPage()
+                          )
+                      );
+                    }
+                    else {
+                      PopUpMessage().SnackError(
+                          "Credentials error !!!",
+                          _scaffoldKey);
+                    }
+                  }
+                  catch(e){
+                    print(e);
+                  }
                 },
                 child: Card(
                     color: Colors.white,

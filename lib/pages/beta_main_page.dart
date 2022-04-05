@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:my_soccer_academia/auth_workflow/auth_service.dart';
 import 'package:my_soccer_academia/auth_workflow/login_page.dart';
 import 'package:my_soccer_academia/auth_workflow/register_page.dart';
@@ -37,6 +39,7 @@ class _BetaMainPageState extends State<BetaMainPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          _displayUser(),
           _displayLeaguesButton(),
           _displayLiveScoreButton(),
           _displayLoginButton(),
@@ -45,6 +48,19 @@ class _BetaMainPageState extends State<BetaMainPage> {
         ],
       ),
     );
+  }
+
+  Widget _displayUser(){
+    var currentUser;
+    if(FirebaseAuth.instance.currentUser?.displayName == null){
+      currentUser = FirebaseAuth.instance.currentUser?.email;
+    }
+    else {
+      currentUser = FirebaseAuth.instance.currentUser?.displayName;
+    }
+    var ususu = FirebaseAuth.instance.currentUser?.displayName;
+    print("Display Name : ====== $ususu");
+    return Text("Current User : $currentUser");
   }
 
   Widget _displayLeaguesButton() {
@@ -190,6 +206,7 @@ class _BetaMainPageState extends State<BetaMainPage> {
             ),
             onPressed: () async {
               await authService.signOut();
+              await GoogleSignIn().signOut();
               Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (context) => LoginPage()
                   )

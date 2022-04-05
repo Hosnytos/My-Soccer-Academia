@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:my_soccer_academia/auth_workflow/login_page.dart';
 import 'package:my_soccer_academia/pages/beta_main_page.dart';
 import 'package:my_soccer_academia/utils/msa_colors.dart';
@@ -24,6 +26,9 @@ class _RegisterPageState extends State<RegisterPage> {
   late String emailTF = "";
   late String pwdTF = "";
   bool _isHidden = true;
+  final google = GoogleSignIn();
+  GoogleSignInAccount ? userGoogle;
+
 
   @override
   Widget build(BuildContext context) {
@@ -221,15 +226,23 @@ class _RegisterPageState extends State<RegisterPage> {
             onPressed: () async {
               if (checkFieldsValues()) {
                 await authService.createUserWithEmailAndPassword(emailTF, pwdTF);
-                Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) =>
-                    const BetaMainPage()
-                    )
-                );
+                var currentUser = FirebaseAuth.instance.currentUser?.uid;
+                if(currentUser != null) {
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) =>
+                      const BetaMainPage()
+                      )
+                  );
+                }
+                else {
+                  PopUpMessage().SnackError(
+                      "Credentials error !!!",
+                      _scaffoldKey);
+                }
               }
               else {
                 PopUpMessage().SnackError(
-                    "Credentials error !!!",
+                    "Email and Password fields cannot be empty",
                     _scaffoldKey);
               }
             },
@@ -252,8 +265,28 @@ class _RegisterPageState extends State<RegisterPage> {
         height: 40.0,
         margin: const EdgeInsets.only(top: 25, right: 43, left: 43),
         child: InkWell(
-            onTap: () {
-              print('taped button');
+            onTap: () async {
+              try{
+                final googleMethod = await google.signIn();
+                userGoogle = googleMethod;
+                final authGoogle = await googleMethod!.authentication;
+                final credGoogle = GoogleAuthProvider.credential(
+                  accessToken: authGoogle.idToken,
+                  idToken: authGoogle.idToken
+                );
+                await FirebaseAuth.instance.signInWithCredential(credGoogle);
+                var currentUser = FirebaseAuth.instance.currentUser?.uid;
+                if(currentUser != null) {
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) =>
+                      const BetaMainPage()
+                      )
+                  );
+                }
+              }
+              catch(e){
+                print(e);
+              }
             },
             child: Card(
                 color: Colors.white,
