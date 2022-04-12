@@ -4,6 +4,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:my_soccer_academia/auth_workflow/auth_service.dart';
 import 'package:my_soccer_academia/auth_workflow/login_page.dart';
 import 'package:my_soccer_academia/auth_workflow/register_page.dart';
+import 'package:my_soccer_academia/pages/home_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../main.dart';
@@ -83,7 +84,7 @@ class _BetaMainPageState extends State<BetaMainPage> {
             onPressed: () {
               Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) =>
-                      const MyHomePage(title: 'My Soccer Academia')
+                      homeScreen()
                   )
               );
             },
