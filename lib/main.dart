@@ -23,7 +23,9 @@ class MySoccerApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider<AuthService>(create: (_) => AuthService(), ),
+        Provider<AuthService>(
+          create: (_) => AuthService(),
+        ),
       ],
       child: MaterialApp(
         title: '',
@@ -48,9 +50,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
-  String leagueName ="";
-  String leagueLogo ="";
+  String leagueName = "";
+  String leagueLogo = "";
   int leagueId = 0;
 
   List<String> leagueNameList = [];
@@ -66,7 +67,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -76,19 +76,16 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  void getLeague() async{
-
-    var leagueFetch = await fetchGetDataList(
-        RequestType.get,
-        '/v3/leagues',
-        {"": ""});
+  void getLeague() async {
+    var leagueFetch =
+        await fetchGetDataList(RequestType.get, '/v3/leagues', {"": ""});
 
     setState(() {
-      for(int i = 0; i <leagueFetch.body.length; i++ ){
+      for (int i = 0; i < leagueFetch.body.length; i++) {
         List<int> leagueBodyId = [];
         leagueBodyId.add(leagueFetch.body[i]['league']['id']);
-        for(int j = 0; j < listFavLeague.length; j++){
-          if(leagueBodyId.contains(listFavLeague[j])){
+        for (int j = 0; j < listFavLeague.length; j++) {
+          if (leagueBodyId.contains(listFavLeague[j])) {
             leagueNameList.add(leagueFetch.body[i]['league']['name']);
             leagueLogoList.add(leagueFetch.body[i]['league']['logo']);
             leagueIdList.add(leagueFetch.body[i]['league']['id']);
@@ -98,33 +95,31 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  Widget _bodyContainer(){
+  Widget _bodyContainer() {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         _leagues(),
-        Expanded(
-            child: _listView()
-        ),
+        Expanded(child: _listView()),
         _fixtures(),
       ],
     );
   }
 
-  Widget _leagues(){
+  Widget _leagues() {
     return const Padding(
-        padding: EdgeInsets.only(top: 18.0, right: 250, bottom: 18),
-        child: Center(
-          child: Text(
-            "League",
-            style: TextStyle(
-                color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
-          ),
+      padding: EdgeInsets.only(top: 18.0, right: 250, bottom: 18),
+      child: Center(
+        child: Text(
+          "League",
+          style: TextStyle(
+              color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
         ),
-      );
+      ),
+    );
   }
 
-  Widget _fixtures(){
+  Widget _fixtures() {
     return const Padding(
       padding: EdgeInsets.only(top: 25.0, right: 250, bottom: 18),
       child: Center(
@@ -137,25 +132,22 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget _listView(){
+  Widget _listView() {
     return ListView.builder(
-      scrollDirection: Axis.horizontal,
+        scrollDirection: Axis.horizontal,
         itemCount: leagueNameList.length,
-        itemBuilder: (context, index){
+        itemBuilder: (context, index) {
           return _pageBody(index);
         });
   }
 
-  Widget _pageBody(index){
+  Widget _pageBody(index) {
     return Container(
-        decoration: const BoxDecoration(
-            color: Colors.white
-        ),
-        child: _cardBody(index)
-    );
+        decoration: const BoxDecoration(color: Colors.white),
+        child: _cardBody(index));
   }
 
-  Widget _cardBody(index){
+  Widget _cardBody(index) {
     leagueId = leagueIdList[index];
     leagueName = leagueNameList[index];
     leagueLogo = leagueLogoList[index];
@@ -163,20 +155,17 @@ class _MyHomePageState extends State<MyHomePage> {
     return SizedBox(
       width: 70,
       child: GestureDetector(
-        onTap: () => Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => TeamsPage(leagueIdList[index],
-                leagueNameList[index],
-                leagueLogoList[index])
-            )
-        ),
+        onTap: () => Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => TeamsPage(leagueIdList[index],
+                leagueNameList[index], leagueLogoList[index]))),
         child: Card(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           elevation: 7.5,
           child: Column(
             children: [
               _leagueLogo(index),
-             // _leagueTitle(index),
+              // _leagueTitle(index),
             ],
           ),
         ),
@@ -184,36 +173,31 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget _leagueLogo(index){
+  Widget _leagueLogo(index) {
     return Padding(
-      padding:
-      const EdgeInsets.only(top: 10),
+      padding: const EdgeInsets.only(top: 10),
       child: Container(
         height: 40.0,
         decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(
-              Radius.circular(12.0)),
+          borderRadius: const BorderRadius.all(Radius.circular(12.0)),
           image: DecorationImage(
-              image: NetworkImageWithRetry(
-                  leagueLogoList[index]),
+              image: NetworkImageWithRetry(leagueLogoList[index]),
               fit: BoxFit.contain),
         ),
       ),
     );
   }
 
-  Widget _leagueTitle(index){
+  Widget _leagueTitle(index) {
     return Container(
       width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.only(top: 20, left: 50, right: 50, bottom: 10),
       child: Center(
         child: Text(
           leagueNameList[index],
-          style: const TextStyle(
-              color: Colors.black, fontSize: 12),
+          style: const TextStyle(color: Colors.black, fontSize: 12),
         ),
       ),
     );
   }
-
 }
