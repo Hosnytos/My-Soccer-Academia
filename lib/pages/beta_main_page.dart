@@ -3,38 +3,35 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:my_soccer_academia/auth_workflow/auth_service.dart';
 import 'package:my_soccer_academia/auth_workflow/login_page.dart';
-import 'package:my_soccer_academia/auth_workflow/register_page.dart';
 import 'package:my_soccer_academia/pages/home_screen.dart';
+import 'package:my_soccer_academia/pages/search_results.dart';
+import 'package:my_soccer_academia/pages/standings_details.dart';
 import 'package:provider/provider.dart';
-
-import '../main.dart';
 
 class BetaMainPage extends StatefulWidget {
   const BetaMainPage({Key? key}) : super(key: key);
 
-
-
   @override
-  _BetaMainPageState createState() => _BetaMainPageState(
-
-  );
+  _BetaMainPageState createState() => _BetaMainPageState();
 }
 
 class _BetaMainPageState extends State<BetaMainPage> {
-
   @override
   Widget build(BuildContext context) {
     final authService = Provider.of<AuthService>(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Page test", style: TextStyle(fontSize: 20),),
+        title: const Text(
+          "Page test",
+          style: TextStyle(fontSize: 20),
+        ),
         centerTitle: true,
       ),
       body: _multiX(authService),
     );
   }
 
-  Widget _multiX(authService){
+  Widget _multiX(authService) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -51,12 +48,11 @@ class _BetaMainPageState extends State<BetaMainPage> {
     );
   }
 
-  Widget _displayUser(){
+  Widget _displayUser() {
     var currentUser;
-    if(FirebaseAuth.instance.currentUser?.displayName == null){
+    if (FirebaseAuth.instance.currentUser?.displayName == null) {
       currentUser = FirebaseAuth.instance.currentUser?.email;
-    }
-    else {
+    } else {
       currentUser = FirebaseAuth.instance.currentUser?.displayName;
     }
     var ususu = FirebaseAuth.instance.currentUser?.displayName;
@@ -78,22 +74,16 @@ class _BetaMainPageState extends State<BetaMainPage> {
               primary: Colors.pinkAccent,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0)),
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 29.5, vertical: 11),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 29.5, vertical: 11),
             ),
             onPressed: () {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) =>
-                      homeScreen()
-                  )
-              );
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => homeScreen()));
             },
-            child: const Text(
-                "Display Leagues"
-            ),
+            child: const Text("Display Leagues"),
           ),
-        )
-    );
+        ));
   }
 
   Widget _displayLiveScoreButton() {
@@ -110,18 +100,16 @@ class _BetaMainPageState extends State<BetaMainPage> {
               primary: Colors.green,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0)),
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 29.5, vertical: 11),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 29.5, vertical: 11),
             ),
             onPressed: () {
-
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => standingsDetails(61)));
             },
-            child: const Text(
-                "Display Live Score"
-            ),
+            child: const Text("Display Live Score"),
           ),
-        )
-    );
+        ));
   }
 
   Widget _displayLoginButton() {
@@ -138,22 +126,16 @@ class _BetaMainPageState extends State<BetaMainPage> {
               primary: Colors.pinkAccent,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0)),
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 29.5, vertical: 11),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 29.5, vertical: 11),
             ),
             onPressed: () {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) =>
-                  LoginPage()
-                  )
-              );
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => LoginPage()));
             },
-            child: const Text(
-                "Display Login Page"
-            ),
+            child: const Text("Display Login Page"),
           ),
-        )
-    );
+        ));
   }
 
   Widget _displayRegisterButton() {
@@ -170,22 +152,16 @@ class _BetaMainPageState extends State<BetaMainPage> {
               primary: Colors.green,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0)),
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 29.5, vertical: 11),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 29.5, vertical: 11),
             ),
             onPressed: () {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) =>
-                      RegisterPage()
-                  )
-              );
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => searchResult('barcelo')));
             },
-            child: const Text(
-                "Display Register Page"
-            ),
+            child: const Text("Display Register Page"),
           ),
-        )
-    );
+        ));
   }
 
   Widget _signOutButton(authService) {
@@ -202,22 +178,17 @@ class _BetaMainPageState extends State<BetaMainPage> {
               primary: Colors.pinkAccent,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0)),
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 29.5, vertical: 11),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 29.5, vertical: 11),
             ),
             onPressed: () async {
               await authService.signOut();
               await GoogleSignIn().signOut();
               Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => LoginPage()
-                  )
-              );
+                  MaterialPageRoute(builder: (context) => LoginPage()));
             },
-            child: const Text(
-                "Logout Button"
-            ),
+            child: const Text("Logout Button"),
           ),
-        )
-    );
+        ));
   }
 }
