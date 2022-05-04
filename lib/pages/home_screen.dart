@@ -3,7 +3,6 @@ import 'package:intl/intl.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_soccer_academia/models/fixtures_details_model.dart';
 import 'package:my_soccer_academia/models/team_standings_model.dart';
-import 'package:my_soccer_academia/pages/searchDelegate.dart';
 import 'package:my_soccer_academia/pages/search_results.dart';
 import 'package:my_soccer_academia/pages/standings.dart';
 import 'package:my_soccer_academia/pages/standings_details.dart';
@@ -29,7 +28,7 @@ class _homeScreenState extends State<homeScreen> {
   List<String> leagueNameList = [];
   List<String> leagueLogoList = [];
   List<int> leagueIdList = [];
-  List<int> listFavLeague = [1, 39, 78, 140, 61, 135, 424];
+  List<int> listFavLeague = [ 39, 40, 78, 79, 140, 141, 61, 62, 135, 136, 424];
 
   List<teamStandingsModel> teamStandingsModelList = [];
   late teamStandingsModel team;
@@ -65,19 +64,21 @@ class _homeScreenState extends State<homeScreen> {
     var leagueFetch =
         await fetchGetDataList(RequestType.get, '/v3/leagues', {"": ""});
 
-    setState(() {
-      for (int i = 0; i < leagueFetch.body.length; i++) {
-        List<int> leagueBodyId = [];
-        leagueBodyId.add(leagueFetch.body[i]['league']['id']);
-        for (int j = 0; j < listFavLeague.length; j++) {
-          if (leagueBodyId.contains(listFavLeague[j])) {
-            leagueNameList.add(leagueFetch.body[i]['league']['name']);
-            leagueLogoList.add(leagueFetch.body[i]['league']['logo']);
-            leagueIdList.add(leagueFetch.body[i]['league']['id']);
+    if (mounted) {
+      setState(() {
+        for (int i = 0; i < leagueFetch.body.length; i++) {
+          List<int> leagueBodyId = [];
+          leagueBodyId.add(leagueFetch.body[i]['league']['id']);
+          for (int j = 0; j < listFavLeague.length; j++) {
+            if (leagueBodyId.contains(listFavLeague[j])) {
+              leagueNameList.add(leagueFetch.body[i]['league']['name']);
+              leagueLogoList.add(leagueFetch.body[i]['league']['logo']);
+              leagueIdList.add(leagueFetch.body[i]['league']['id']);
+            }
           }
         }
-      }
-    });
+      });
+    }
   }
 
   void getFixtures() async {
@@ -159,7 +160,7 @@ class _homeScreenState extends State<homeScreen> {
             ),
           )
         ],
-        backgroundColor: Colors.grey[850],
+        backgroundColor: msa_color.MSAColors.bottomNavBar,
         elevation: 0,
       ),
       body: SafeArea(

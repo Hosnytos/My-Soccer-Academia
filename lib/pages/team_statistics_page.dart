@@ -59,7 +59,7 @@ class _TeamStatisticsPageState extends State<TeamStatisticsPage> {
   int goalConcededH = 0;
   int goalConcededA = 0;
   int goalConcededTotal = 0;
-  String lineup = "";
+  String? lineup = "4-3-3";
   int penaltyScoredTotal = 0;
   int penaltyMissedTotal = 0;
 
@@ -373,7 +373,7 @@ class _TeamStatisticsPageState extends State<TeamStatisticsPage> {
           padding: EdgeInsets.only(right: 122.0),
           child: Text("Lineup :"),
         ),
-        Text(lineup)
+        Text(lineup!)
       ],
     );
   }

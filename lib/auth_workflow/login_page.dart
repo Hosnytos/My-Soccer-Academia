@@ -5,19 +5,31 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:my_soccer_academia/auth_workflow/auth_service.dart';
 import 'package:my_soccer_academia/auth_workflow/register_page.dart';
-import 'package:my_soccer_academia/pages/beta_main_page.dart';
+import 'package:my_soccer_academia/pages/bottom_navigation.dart';
 import 'package:my_soccer_academia/utils/msa_colors.dart';
 import 'package:my_soccer_academia/utils/pop_up_message.dart';
 import 'package:provider/provider.dart';
+import 'package:stream_chat_flutter/stream_chat_flutter.dart' as strm;
 
 class LoginPage extends StatefulWidget {
+  LoginPage(this.client, this.channel);
+  strm.StreamChatClient client;
+  strm.Channel channel;
 
   @override
   _LoginPageState createState() => _LoginPageState(
+    client:this.client,
+    channel:this.channel,
   );
 }
 
 class _LoginPageState extends State<LoginPage> {
+  _LoginPageState({
+    required this.client,
+    required this.channel
+  });
+  strm.StreamChatClient client;
+  strm.Channel channel;
 
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   late String loginTF = "";
@@ -182,8 +194,17 @@ class _LoginPageState extends State<LoginPage> {
                  await authService.signWithEmailAndPassword(loginTF, pwdTF);
                  var currentUser = FirebaseAuth.instance.currentUser;
                  if(currentUser != null) {
+                   final currentUserId = FirebaseAuth.instance.currentUser?.uid;
+                   strm.StreamChatCore.of(context).client.disconnectUser();
+                   var userToken = strm.StreamChatCore.of(context).client.devToken("$currentUserId").toString();
+                   userToken = userToken.split(' ')[1].toString();
+                   userToken = userToken.split(',')[0];
+                   strm.StreamChatCore.of(context).client.connectUser(strm.User(id: "$currentUserId"),
+                       userToken
+                   );
+                   channel.addMembers(["$currentUserId"]);
                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                       builder: (context) => const BetaMainPage()));
+                       builder: (context) => BottomNavigation(client, channel)));
                  }
                  else {
                    PopUpMessage().SnackError(
@@ -222,9 +243,18 @@ class _LoginPageState extends State<LoginPage> {
                     await FirebaseAuth.instance.signInWithCredential(credGoogle);
                     var currentUser = FirebaseAuth.instance.currentUser?.uid;
                     if(currentUser != null) {
+                      final currentUserId = FirebaseAuth.instance.currentUser?.uid;
+                      strm.StreamChatCore.of(context).client.disconnectUser();
+                      var userToken = strm.StreamChatCore.of(context).client.devToken("$currentUserId").toString();
+                      userToken = userToken.split(' ')[1].toString();
+                      userToken = userToken.split(',')[0];
+                      strm.StreamChatCore.of(context).client.connectUser(strm.User(id: "$currentUserId"),
+                          userToken
+                      );
+                      channel.addMembers(["$currentUserId"]);
                       Navigator.of(context).pushReplacement(
                           MaterialPageRoute(builder: (context) =>
-                          const BetaMainPage()
+                              BottomNavigation(client, channel)
                           )
                       );
                     }
@@ -311,7 +341,7 @@ class _LoginPageState extends State<LoginPage> {
                       ..onTap = () {
                         Navigator.of(context).push(
                             MaterialPageRoute(builder: (context) =>
-                                RegisterPage()
+                                RegisterPage(client, channel)
                             )
                         );
                       })

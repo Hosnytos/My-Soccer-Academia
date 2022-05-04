@@ -388,12 +388,7 @@ class _standingsDetailsState extends State<standingsDetails>
                                                   .push(MaterialPageRoute(
                                                       builder: (context) =>
                                                           TeamDetailsPage(
-                                                              team.teamId,
-                                                              team.teamName,
-                                                              team.teamLogo,
-                                                              leagueName,
-                                                              leagueLogo,
-                                                              leagueId))),
+                                                              team.teamId))),
                                             ),
 
                                             //======================

@@ -240,16 +240,7 @@ class _fixtureState extends State<fixture> with TickerProviderStateMixin {
                             onTap: () => Navigator.of(context).push(
                                 MaterialPageRoute(
                                     builder: (context) => TeamDetailsPage(
-                                        fixturesDetailsModelList[0].homeID,
-                                        fixturesDetailsModelList[0]
-                                            .homeName
-                                            .toString(),
-                                        fixturesDetailsModelList[0]
-                                            .homeLogo
-                                            .toString(),
-                                        leagueName,
-                                        leagueLogo,
-                                        leagueId))),
+                                        fixturesDetailsModelList[0].homeID))),
                             child: Container(
                               height: 75,
                               width: 75,
@@ -272,16 +263,7 @@ class _fixtureState extends State<fixture> with TickerProviderStateMixin {
                             onTap: () => Navigator.of(context).push(
                                 MaterialPageRoute(
                                     builder: (context) => TeamDetailsPage(
-                                        fixturesDetailsModelList[0].awayID,
-                                        fixturesDetailsModelList[0]
-                                            .awayName
-                                            .toString(),
-                                        fixturesDetailsModelList[0]
-                                            .awayLogo
-                                            .toString(),
-                                        leagueName,
-                                        leagueLogo,
-                                        leagueId))),
+                                        fixturesDetailsModelList[0].awayID))),
                             child: Container(
                               height: 75,
                               width: 75,

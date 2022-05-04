@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:my_soccer_academia/models/team_model.dart';
-import 'package:my_soccer_academia/pages/standings_details.dart';
 import 'package:my_soccer_academia/rest/request.dart';
 
 class searchDelegate extends SearchDelegate {

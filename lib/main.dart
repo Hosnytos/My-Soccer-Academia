@@ -1,23 +1,39 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:my_soccer_academia/auth_workflow/auth_service.dart';
 import 'package:my_soccer_academia/auth_workflow/wrapper.dart';
+import 'package:my_soccer_academia/pages/searchDelegate.dart';
 import 'package:my_soccer_academia/pages/splash_screen.dart';
 import 'package:flutter_image/network.dart';
 import 'package:my_soccer_academia/pages/teams_page.dart';
 import 'package:my_soccer_academia/rest/request.dart';
+import 'package:my_soccer_academia/utils/msa_colors.dart';
 import 'package:provider/provider.dart';
+import 'package:stream_chat_flutter/stream_chat_flutter.dart' as strm;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  runApp(const MyApp());
+  final client = strm.StreamChatClient(
+      'tbnvcrvbc6me',
+      logLevel: strm.Level.INFO
+  );
+  final currentUserId = FirebaseAuth.instance.currentUser?.uid;
+  await client.connectUser(strm.User(id: '$currentUserId'),
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoidHV0b3JpYWwtZmx1dHRlciJ9.bcURzRxLZZk2uLhOoet1GiPaVHX3rbFcno8EnBi1e1w'
+  );
+  final channel = client.channel('messaging',id: 'Main-Channel');
+  channel.watch();
+  runApp(MyApp(client: client, channel: channel));
 }
 
-class MySoccerApp extends StatelessWidget {
-  const MySoccerApp({Key? key}) : super(key: key);
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key,required this.client, required this.channel}) : super(key: key);
+  final strm.StreamChatClient client;
+  final strm.Channel channel;
 
   @override
   Widget build(BuildContext context) {
@@ -31,11 +47,22 @@ class MySoccerApp extends StatelessWidget {
         title: '',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          primarySwatch: Colors.green,
+            colorScheme: ColorScheme.fromSwatch().copyWith(
+              primary: MSAColors.bottomNavBar,
+              secondary: MSAColors.bottomNavBar,
+            )
         ),
-        //home: const MyHomePage(title: 'My Soccer Academia'),
-        home: Wrapper(),
-      ),
+        builder: (context, child){
+          return strm.StreamChatCore(
+            client: client,
+            child: strm.StreamChat(
+                client: client,
+                child: child
+            ),
+          );
+        },
+        home: SplashScreen(client, channel),
+      )
     );
   }
 }
@@ -69,8 +96,29 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Image.asset(
+          "assets/msa_logo.png",
+          height: 35,
+          width: 45,
+        ),
         centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              showSearch(
+                context: context,
+                delegate: searchDelegate(),
+              );
+            },
+            icon: const Icon(
+              Icons.search_outlined,
+              color: Colors.white30,
+              size: 30,
+            ),
+          )
+        ],
+        backgroundColor: MSAColors.bottomNavBar,
+        elevation: 0,
       ),
       body: _bodyContainer(),
     );

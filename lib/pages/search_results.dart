@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_soccer_academia/models/team_model.dart';
-import 'package:my_soccer_academia/pages/standings_details.dart';
+import 'package:my_soccer_academia/pages/team_details_page.dart';
 import 'package:my_soccer_academia/rest/request.dart';
 
 class searchResult extends StatefulWidget {
@@ -101,7 +101,7 @@ class _searchResultState extends State<searchResult>
                                 onPressed: () {
                                   Navigator.of(context).push(MaterialPageRoute(
                                       builder: (context) =>
-                                          standingsDetails(team.teamId)));
+                                          TeamDetailsPage(team.teamId)));
                                 },
                                 icon: const Icon(
                                   Icons.arrow_forward_ios,

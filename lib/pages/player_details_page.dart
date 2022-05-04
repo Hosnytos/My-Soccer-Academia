@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_image/network.dart';
 import 'package:my_soccer_academia/pages/player_statistics_page.dart';
-import 'package:my_soccer_academia/pages/squad_page.dart';
 import 'package:my_soccer_academia/rest/request.dart';
 
 class PlayerDetailsPage extends StatefulWidget {
@@ -234,7 +233,7 @@ class _PlayerDetailsPageState extends State<PlayerDetailsPage> {
       padding: const EdgeInsets.only(left: 15,right: 22.0),
       child: Text("$selectedPlayerNumber",
         style: const TextStyle(
-          color: Colors.green,
+          color: Colors.blue,
           fontSize: 70.0,
         ),
       ),
@@ -419,7 +418,7 @@ class _PlayerDetailsPageState extends State<PlayerDetailsPage> {
                 color: Colors.white,
                 fontSize: 12,
               ),
-              primary: Colors.green,
+              primary: Colors.blue,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0)),
               padding: const EdgeInsets.symmetric(

@@ -6,45 +6,25 @@ import 'package:my_soccer_academia/rest/request.dart';
 
 class TeamDetailsPage extends StatefulWidget {
 
-  TeamDetailsPage(this.selectedTeamId, this.selectedTeamName,
-      this.selectedTeamLogo, this.leagueName, this.leagueLogo,
-      this.leagueId);
+  TeamDetailsPage(this.selectedTeamId);
 
   int selectedTeamId = 0;
-  String selectedTeamName = "";
-  String selectedTeamLogo = "";
-  String leagueName = "";
-  String leagueLogo = "";
-  int leagueId = 0;
 
   @override
   _TeamDetailsPageState createState() => _TeamDetailsPageState(
-      selectedTeamId:this.selectedTeamId,
-      selectedTeamName:this.selectedTeamName,
-    selectedTeamLogo:this.selectedTeamLogo,
-    leagueName:this.leagueName,
-    leagueLogo:this.leagueLogo,
-    leagueId:this.leagueId,
+      selectedTeamId:this.selectedTeamId
   );
 }
 
 class _TeamDetailsPageState extends State<TeamDetailsPage> {
 
   _TeamDetailsPageState({
-    required this.selectedTeamId,
-    required this.selectedTeamName,
-    required this.selectedTeamLogo,
-    required this.leagueName,
-    required this.leagueLogo,
-    required this.leagueId
+    required this.selectedTeamId
   });
 
   int selectedTeamId = 0;
   String selectedTeamName = "";
   String selectedTeamLogo = "";
-  String leagueName = "";
-  String leagueLogo = "";
-  int leagueId = 0;
 
   String teamCountry = "";
   int teamFounded = 0;
@@ -55,6 +35,10 @@ class _TeamDetailsPageState extends State<TeamDetailsPage> {
   String stadiumPicture = "";
   String stadiumAddress = "";
   String stadiumCity = "";
+  String leagueName = "";
+  int leagueId = 0;
+  String leagueLogo = "";
+
 
   @override
   void initState() {
@@ -82,11 +66,19 @@ class _TeamDetailsPageState extends State<TeamDetailsPage> {
           "id": "$selectedTeamId"
         });
 
+    teamCountry = myTeamInfo.body[0]['team']['country'];
+    var myLeagueInfo = await fetchGetDataList(
+        RequestType.get,
+        '/v3/leagues',
+        {
+          "country": teamCountry
+        });
+
     setState(() {
       var teamBody = myTeamInfo.body[0]['team'];
       var venueBody = myTeamInfo.body[0]['venue'];
 
-      teamCountry = teamBody['country'];
+
       teamFounded = teamBody['founded'];
       teamLogo = teamBody['logo'];
       stadiumName = venueBody['name'];
@@ -95,7 +87,13 @@ class _TeamDetailsPageState extends State<TeamDetailsPage> {
       stadiumPicture = venueBody['image'];
       stadiumAddress = venueBody['address'];
       stadiumCity = venueBody['city'];
+      selectedTeamName = teamBody['name'];
+      selectedTeamLogo = teamBody['logo'];
 
+      var leagueBody = myLeagueInfo.body[0]['league'];
+      leagueName = leagueBody['name'];
+      leagueId = leagueBody['id'];
+      leagueLogo = leagueBody['logo'];
     });
   }
 
@@ -400,7 +398,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage> {
                 color: Colors.white,
                 fontSize: 12,
               ),
-              primary: Colors.green,
+              primary: Colors.blue,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0)),
               padding: const EdgeInsets.symmetric(
@@ -434,7 +432,7 @@ class _TeamDetailsPageState extends State<TeamDetailsPage> {
                 color: Colors.white,
                 fontSize: 12,
               ),
-              primary: Colors.green,
+              primary: Colors.blue,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0)),
               padding: const EdgeInsets.symmetric(

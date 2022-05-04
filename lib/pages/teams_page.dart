@@ -118,8 +118,7 @@ class _TeamsPageState extends State<TeamsPage> {
       child: GestureDetector(
         onTap: () => Navigator.of(context).push(
             MaterialPageRoute(builder: (context) =>
-                TeamDetailsPage(selectedTeamId, selectedTeamName,
-                    selectedTeamLogo, leagueName, leagueLogo, leagueId)
+                TeamDetailsPage(selectedTeamId)
             )
         ),
         child: Container(

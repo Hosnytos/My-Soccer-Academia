@@ -1,35 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:my_soccer_academia/auth_workflow/wrapper.dart';
 import 'dart:async';
-import '../main.dart';
 
+import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class SplashScreen extends StatefulWidget {
+  SplashScreen(this.client, this.channel);
+  StreamChatClient client;
+  Channel channel;
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: '',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-      ),
-      home: const SplashScreen(),
+  _SplashScreen createState() {
+    return _SplashScreen(
+      client:this.client,
+      channel:this.channel,
     );
   }
 }
 
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
-
-  @override
-  _SplashScreen createState() {
-    return _SplashScreen();
-  }
-}
-
 class _SplashScreen extends State<SplashScreen> {
+  _SplashScreen({
+    required this.client,
+    required this.channel
+  });
+  StreamChatClient client;
+  Channel channel;
   bool visible = false;
 
   @override
@@ -38,7 +33,7 @@ class _SplashScreen extends State<SplashScreen> {
     Timer(const Duration(seconds: 6),
             () => Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) =>
-            const MySoccerApp()
+                Wrapper(client, channel)
             )
         )
     );
@@ -48,6 +43,7 @@ class _SplashScreen extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[850],
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
